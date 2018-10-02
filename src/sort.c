@@ -6,7 +6,7 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 13:56:39 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/01 17:26:12 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/01 19:17:23 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,24 +248,18 @@ int		partitionningB(t_list **lsta, t_list **lstb, int size_partition, int *i)
 
 void	quicksort(t_list **lsta, t_list **lstb, int size_partition, int *i)
 {
-	int		new_size;
-	int		test;
+	int		p;
 
-		//ft_printf("Appel a quicksort (size_partition = %d).\n", size_partition);
-	test = 0;
+	//ft_printf("Appel a quicksort (size_partition = %d).\n", size_partition);
 	if (size_partition > 0)
 	{
-		new_size = partitionningA(lsta, lstb, size_partition, i);
-		test = 0;
-		quicksort(lsta, lstb, size_partition - new_size, i);
-		new_size = partitionningB(lsta, lstb, new_size, i);
-		test = 1;
-		quicksort(lsta, lstb, size_partition - new_size, i);
+		p = partitionningA(lsta, lstb, size_partition, i);
+		quicksort(lsta, lstb, size_partition - p, i);
+		p = partitionningB(lsta, lstb, size_partition, i);
+		quicksort(lsta, lstb, size_partition - p, i);
 	}
 	else
-	{
 		ft_printf("Cet arbre meurt.\n");
-	}
 }
 
 /*static void	sort_three(t_list **lsta, t_list **lstb)
