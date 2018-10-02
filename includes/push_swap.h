@@ -6,7 +6,7 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 14:59:31 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/02 19:12:21 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/02 21:08:53 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PUSH_SWAP_H
 # include "../libft/includes/libft.h"
 # include <fcntl.h>
+# include <time.h> // TO DELETE
+# include <stdio.h> // POUR AFFICHAGE PLUS OPTI A SUPPRIMER
 
 #define A_COLOR 44
 #define B_COLOR 41
