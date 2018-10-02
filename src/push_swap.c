@@ -6,7 +6,7 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/19 12:13:58 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/01 16:08:35 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/02 19:38:11 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ int		main(int argc, char **argv)
 	//else
 	//{
 		quicksort(&lsta, &lstb, ft_lstsize(lsta), &acc);
+		ft_printf("END OF SORTING\n");
 		ft_printf("\033[4mList A\033[0m\n");
-		ps_print_list(lsta);
+		ps_print_list(lsta, A_COLOR);
 		ft_printf("\033[4mList B\033[0m\n");
-		ps_print_list(lstb);
-		ft_printf("Nombre instruction : %d\n", acc);
+		ps_print_list(lstb, B_COLOR);
+		ft_printf("Total instruction : %d\n", acc);
 	//}
 	return (0);
 }

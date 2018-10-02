@@ -6,25 +6,28 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 11:19:07 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/01 16:09:46 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/02 19:38:45 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void		ps_print_list(t_list *lst)
+void		ps_print_list(t_list *lst, int colorcode)
 {
 	int		*curr;
 
+	ft_printf("\033[%dm", colorcode);
 	if (!lst)
 		ft_putstr("(empty)");
 	while (lst)
 	{
 		curr = (int*)lst->content;
-		ft_printf("[%d]", *curr);
+		ft_printf("%d", *curr);
+		if (lst->next)
+			ft_printf(" ");
 		lst = lst->next;
 	}
-	ft_printf("\n");
+	ft_printf("\033[0m\n");
 }
 
 static int	catoi(char *arg, int *addr)

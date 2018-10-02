@@ -6,7 +6,7 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 14:59:31 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/01 14:50:12 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/02 19:12:21 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define PUSH_SWAP_H
 # include "../libft/includes/libft.h"
 # include <fcntl.h>
+
+#define A_COLOR 44
+#define B_COLOR 41
 
 // PENSER A FREE LES LISTES DANS LES 2 MAINS
 // CHECKER LEAKS GET_NEXT_LINE !!!!!!
@@ -24,7 +27,7 @@ typedef struct	s_func
 	char	*key;
 }				t_func;
 
-void			ps_print_list(t_list *lst);
+void			ps_print_list(t_list *lst, int colorcode);
 
 int				ps_build_list(char **argv, t_list **lst);
 int				reader(t_list **lsta, t_list **lstb);
