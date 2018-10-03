@@ -6,7 +6,7 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 14:59:31 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/02 21:08:53 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/03 01:58:35 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,14 @@
 # include <time.h> // TO DELETE
 # include <stdio.h> // POUR AFFICHAGE PLUS OPTI A SUPPRIMER
 
-#define A_COLOR 44
-#define B_COLOR 41
+# define A_COLOR 44
+# define B_COLOR 41
+
+# define DEBUG_MODE 1
+# define VISUAL_MODE 2
+# define NORMAL_MODE 3
+
+# define PS_MODE VISUAL_MODE
 
 // PENSER A FREE LES LISTES DANS LES 2 MAINS
 // CHECKER LEAKS GET_NEXT_LINE !!!!!!

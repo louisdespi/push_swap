@@ -6,7 +6,7 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 13:56:39 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/02 21:14:30 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/03 01:56:57 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,10 +151,13 @@ int		partitionningA(t_list **lsta, t_list **lstb, int size_partition, int *i)
 	vbool = 0;
 	counter = 0;
 	count_action = 0;
-	//ft_printf("\033[4;32m--------------Partitionning A--------------\033[0m\n");
-	//ft_printf("Partition size : \033[1;31m%d\033[0m\n", size_partition);
 	curr_median = get_median_partition(*lsta, size_partition);
-	//ft_printf("Pivot : \033[1;33m%d\033[0m\n", curr_median);
+	if (PS_MODE == DEBUG_MODE)
+	{
+		ft_printf("\033[4;32m--------------Partitionning A--------------\033[0m\n");
+		ft_printf("Partition size : \033[1;31m%d\033[0m\n", size_partition);
+		ft_printf("Pivot : \033[1;33m%d\033[0m\n", curr_median);
+	}
 	while (remaining_smaller_value(*lsta, curr_median))
 	{
 		curr_value = *((int*)(*lsta)->content);
@@ -164,7 +167,6 @@ int		partitionningA(t_list **lsta, t_list **lstb, int size_partition, int *i)
 			print_do_action("pb", lsta, lstb, push, i);
 			if (curr_value == curr_median)
 			{
-				count_action--;
 				if (lstb)
 				{
 					print_do_action("rb", lsta, lstb, rotate, i);
@@ -187,9 +189,8 @@ int		partitionningA(t_list **lsta, t_list **lstb, int size_partition, int *i)
 	{
 		print_do_action("rra", lsta, lstb, rotate, i);
 	}
-	//ps_print_list(*lsta, A_COLOR);
-	//ps_print_list(*lstb, B_COLOR);
-	//ft_printf("\033[4;32m------------End Partitionning A------------\033[0m\n\n");
+	if (PS_MODE == DEBUG_MODE)
+		ft_printf("\033[4;32m------------End Partitionning A------------\033[0m\n\n");
 	return (count_action);
 }
 
@@ -204,10 +205,13 @@ int		partitionningB(t_list **lsta, t_list **lstb, int size_partition, int *i)
 	vbool = 0;
 	counter = 0;
 	count_action = 0;
-	//ft_printf("\033[4;35m--------------Partitionning B--------------\033[0m\n");
-	//ft_printf("Partition size : \033[1;31m%d\033[0m\n", size_partition);
 	curr_median = get_median_partition(*lstb, size_partition);
-	//ft_printf("Pivot : \033[1;33m%d\033[0m\n", curr_median);
+	if (PS_MODE == DEBUG_MODE)
+	{
+		ft_printf("\033[4;35m--------------Partitionning B--------------\033[0m\n");
+		ft_printf("Partition size : \033[1;31m%d\033[0m\n", size_partition);
+		ft_printf("Pivot : \033[1;33m%d\033[0m\n", curr_median);
+	}
 	while (remaining_bigger_value(*lstb, curr_median))
 	{
 		curr_value = *((int*)(*lstb)->content);
@@ -217,7 +221,6 @@ int		partitionningB(t_list **lsta, t_list **lstb, int size_partition, int *i)
 			print_do_action("pa", lsta, lstb, push, i);
 			if (curr_value == curr_median)
 			{
-				count_action--;
 				if (lsta)
 				{
 					print_do_action("ra", lsta, lstb, rotate, i);
@@ -240,9 +243,8 @@ int		partitionningB(t_list **lsta, t_list **lstb, int size_partition, int *i)
 	{
 		print_do_action("rrb", lsta, lstb, rotate, i);
 	}
-	//ps_print_list(*lsta, A_COLOR);
-	//ps_print_list(*lstb, B_COLOR);
-	//ft_printf("\033[4;35m------------End Partitionning B------------\033[0m\n\n");
+	if (PS_MODE == DEBUG_MODE)
+		ft_printf("\033[4;35m------------End Partitionning B------------\033[0m\n\n");
 	return (count_action);
 }
 
@@ -250,12 +252,15 @@ void	quicksort(t_list **lsta, t_list **lstb, int size_partition, int *i)
 {
 	int		p;
 
-	//usleep(350000);
-	//system("clear");
+	if (PS_MODE == DEBUG_MODE)
+	{
+		ps_print_list(*lsta, A_COLOR);
+		ps_print_list(*lstb, B_COLOR);
+	}
 	if (size_partition > 0)
 	{
 		p = partitionningA(lsta, lstb, size_partition, i);
-		quicksort(lsta, lstb, size_partition - p - 1, i);
+		quicksort(lsta, lstb, size_partition - p, i);
 		print_do_action("pa", lsta, lstb, push, i);
 		size_partition--;
 		if (size_partition > 0)

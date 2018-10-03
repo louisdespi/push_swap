@@ -6,7 +6,7 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 11:19:07 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/02 21:14:28 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/03 01:52:06 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,23 @@
 void		ps_print_list(t_list *lst, int colorcode)
 {
 	int		*curr;
-	int		test;
 
 	if (!lst)
-		ft_putstr("(empty)\033[0m\n");
+		ft_putstr("(empty)\n");
 	while (lst)
 	{
 		curr = (int*)lst->content;
-		test = *curr;
-		printf("\033[%dm%*d\033[0m\n", colorcode, *curr, *curr);
-		/*if (lst->next)
-			ft_printf(" ");*/
+		if (PS_MODE == VISUAL_MODE)
+			printf("\033[%dm%*d\033[0m\n", colorcode, *curr, *curr);
+		else if (PS_MODE == DEBUG_MODE)
+		{
+			ft_printf("%d", *curr);
+			if (lst->next)
+				ft_printf("|");
+		}
 		lst = lst->next;
 	}
-	ft_printf("\033[0m\n");
+	ft_printf("\n");
 }
 
 static int	catoi(char *arg, int *addr)
