@@ -6,7 +6,7 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 13:56:39 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/03 01:56:57 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/04 02:51:09 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,19 +111,6 @@ void		get_min_partition(t_list *lst, int size_partition, int *min)
 	}
 }
 
-int		sizeof_list_until(t_list *lst, int n)
-{
-	int		i;
-
-	i = 0;
-	while (lst && *((int*)lst->content) != n)
-	{
-		i++;
-		lst = lst->next;
-	}
-	return (i);
-}
-
 int		get_median_partition(t_list *lst, int size_partition)
 {
 	int		min;
@@ -140,17 +127,15 @@ int		get_median_partition(t_list *lst, int size_partition)
 	return (median);
 }
 
-int		partitionningA(t_list **lsta, t_list **lstb, int size_partition, int *i)
+void	partitionningA(t_list **lsta, t_list **lstb, int size_partition, int *i)
 {
 	int		curr_median;
 	int		curr_value;
 	int		vbool;
 	int		counter;
-	int		count_action;
 
 	vbool = 0;
 	counter = 0;
-	count_action = 0;
 	curr_median = get_median_partition(*lsta, size_partition);
 	if (PS_MODE == DEBUG_MODE)
 	{
@@ -163,7 +148,6 @@ int		partitionningA(t_list **lsta, t_list **lstb, int size_partition, int *i)
 		curr_value = *((int*)(*lsta)->content);
 		if (curr_value <= curr_median)
 		{
-			count_action++;
 			print_do_action("pb", lsta, lstb, push, i);
 			if (curr_value == curr_median)
 			{
@@ -191,20 +175,17 @@ int		partitionningA(t_list **lsta, t_list **lstb, int size_partition, int *i)
 	}
 	if (PS_MODE == DEBUG_MODE)
 		ft_printf("\033[4;32m------------End Partitionning A------------\033[0m\n\n");
-	return (count_action);
 }
 
-int		partitionningB(t_list **lsta, t_list **lstb, int size_partition, int *i)
+void	partitionningB(t_list **lsta, t_list **lstb, int size_partition, int *i)
 {
 	int		curr_median;
 	int		curr_value;
 	int		vbool;
 	int		counter;
-	int		count_action;
 
 	vbool = 0;
 	counter = 0;
-	count_action = 0;
 	curr_median = get_median_partition(*lstb, size_partition);
 	if (PS_MODE == DEBUG_MODE)
 	{
@@ -217,7 +198,6 @@ int		partitionningB(t_list **lsta, t_list **lstb, int size_partition, int *i)
 		curr_value = *((int*)(*lstb)->content);
 		if (curr_value >= curr_median)
 		{
-			count_action++;
 			print_do_action("pa", lsta, lstb, push, i);
 			if (curr_value == curr_median)
 			{
@@ -245,113 +225,151 @@ int		partitionningB(t_list **lsta, t_list **lstb, int size_partition, int *i)
 	}
 	if (PS_MODE == DEBUG_MODE)
 		ft_printf("\033[4;35m------------End Partitionning B------------\033[0m\n\n");
-	return (count_action);
 }
 
-void	quicksort(t_list **lsta, t_list **lstb, int size_partition, int *i)
+void	quicksortB(t_list **lsta, t_list **lstb, int size_partition, int *i)
 {
 	int		p;
 
-	if (PS_MODE == DEBUG_MODE)
+	p = size_partition;
+	if (size_partition == 2)
 	{
-		ps_print_list(*lsta, A_COLOR);
-		ps_print_list(*lstb, B_COLOR);
+		if (*((int*)(*lstb)->content) < *((int*)(*lstb)->next->content))
+			print_do_action("sb", lsta, lstb, swap, i);
+		print_do_action("pa", lsta, lstb, push, i);
+		print_do_action("pa", lsta, lstb, push, i);
+		return ;
 	}
 	if (size_partition > 0)
 	{
-		p = partitionningA(lsta, lstb, size_partition, i);
-		quicksort(lsta, lstb, size_partition - p, i);
+		partitionningB(lsta, lstb, p, i);
+		print_do_action("pb", lsta, lstb, push, i);
+		quicksortA(lsta, lstb, p / 2, i);
 		print_do_action("pa", lsta, lstb, push, i);
-		size_partition--;
-		if (size_partition > 0)
-		{
-			p = partitionningB(lsta, lstb, size_partition, i);
-			quicksort(lsta, lstb, size_partition - p, i);
-		}
+		p = (p - 1) / 2;
+		quicksortB(lsta, lstb, p, i);
 	}
 }
+
+void	quicksortA(t_list **lsta, t_list **lstb, int size_partition, int *i)
+{
+	int		p;
+
+	p = size_partition;
+	if (size_partition > 0)
+	{
+		partitionningA(lsta, lstb, p, i);
+		quicksortA(lsta, lstb, p / 2, i);
+		print_do_action("pa", lsta, lstb, push, i);
+		p = (p - 1) / 2;
+		quicksortB(lsta, lstb, p, i);
+	}
+}
+
+/*void	quicksort(t_list **lsta, t_list **lstb, int size_partition, int *i)
+  {
+  int		p;
+
+  if (PS_MODE == DEBUG_MODE)
+  {
+  ps_print_list(*lsta, A_COLOR);
+  ps_print_list(*lstb, B_COLOR);
+  }
+  if (size_partition > 0)
+  {
+  p = partitionningA(lsta, lstb, size_partition, i);
+  quicksort(lsta, lstb, size_partition - p, i);
+  print_do_action("pa", lsta, lstb, push, i);
+  size_partition--;
+  if (size_partition > 0)
+  {
+  p = partitionningB(lsta, lstb, size_partition, i);
+  quicksort(lsta, lstb, size_partition - p, i);
+  }
+  }
+  }*/
 
 /*static void	sort_three(t_list **lsta, t_list **lstb)
-{
-	int		i;
-	int		csorted;
-	int		size;
-	int		max;
+  {
+  int		i;
+  int		csorted;
+  int		size;
+  int		max;
 
-	i = index_max(*lsta, &max);
-	size = ft_lstsize(*lsta);
-	csorted = count_sorted(*lsta);
-	if (csorted != size && size == 3)
-	{
-		if (i == 1)
-			print_do_action("rra", lsta, lstb, rotate);
-		else if (i == 0)
-			print_do_action("ra", lsta, lstb, rotate);
-		csorted = count_sorted(*lsta);
-	}
-	if (csorted != size && size >= 2)
-	{
-		if (*((int*)(*lsta)->content) > *((int*)(*lsta)->next->content))
-			print_do_action("sa", lsta, lstb, swap);
-	}
+  i = index_max(*lsta, &max);
+  size = ft_lstsize(*lsta);
+  csorted = count_sorted(*lsta);
+  if (csorted != size && size == 3)
+  {
+  if (i == 1)
+  print_do_action("rra", lsta, lstb, rotate);
+  else if (i == 0)
+  print_do_action("ra", lsta, lstb, rotate);
+  csorted = count_sorted(*lsta);
+  }
+  if (csorted != size && size >= 2)
+  {
+  if (*((int*)(*lsta)->content) > *((int*)(*lsta)->next->content))
+  print_do_action("sa", lsta, lstb, swap);
+  }
+  }
+
+  void	sort_sl(t_list **lsta, t_list **lstb)
+  {
+  int		csorted;
+  int		initial_size;
+  int		csortedb;
+
+  initial_size = ft_lstsize(*lsta);
+  csorted = count_sorted(*lsta);
+  csortedb = 0;
+  while (csorted != initial_size && ft_lstsize(*lsta) > 3)
+  {
+  if (*((int*)(*lsta)->content) > *((int*)(*lsta)->next->content))
+  print_do_action("sa", lsta, lstb, swap);
+  else if (ismin(*lsta))
+  {
+  print_do_action("pb", lsta, lstb, push);
+  csortedb++;
+  }
+  else
+  print_do_action("rra", lsta, lstb, rotate);
+  csorted = count_sorted(*lsta) + csortedb;
+  }
+  sort_three(lsta, lstb);
+  while (*lstb)
+  print_do_action("pa", lsta, lstb, push);
+  }
+
+  void		insertion_sort(t_list **lsta, t_list **lstb)
+  {
+  int		initial_size;
+  int		csorted;
+  int		i;
+  int		min;
+  int		size;
+
+  csorted = count_sorted(*lsta);
+  initial_size = ft_lstsize(*lsta);
+  while ((size = ft_lstsize(*lsta)) > 3 && initial_size != csorted)
+  {
+  i = index_min(*lsta, &min);
+  if (i <= size / 2)
+  {
+  while (*((int*)(*lsta)->content) != min)
+  print_do_action("ra", lsta, lstb, rotate);
+  }
+  else
+{
+	while (*((int*)(*lsta)->content) != min)
+		print_do_action("rra", lsta, lstb, rotate);
 }
-
-void	sort_sl(t_list **lsta, t_list **lstb)
-{
-	int		csorted;
-	int		initial_size;
-	int		csortedb;
-
-	initial_size = ft_lstsize(*lsta);
-	csorted = count_sorted(*lsta);
-	csortedb = 0;
-	while (csorted != initial_size && ft_lstsize(*lsta) > 3)
-	{
-		if (*((int*)(*lsta)->content) > *((int*)(*lsta)->next->content))
-			print_do_action("sa", lsta, lstb, swap);
-		else if (ismin(*lsta))
-		{
-			print_do_action("pb", lsta, lstb, push);
-			csortedb++;
-		}
-		else
-			print_do_action("rra", lsta, lstb, rotate);
-		csorted = count_sorted(*lsta) + csortedb;
-	}
-	sort_three(lsta, lstb);
-	while (*lstb)
-		print_do_action("pa", lsta, lstb, push);
+print_do_action("pb", lsta, lstb, push);
 }
-
-void		insertion_sort(t_list **lsta, t_list **lstb)
-{
-	int		initial_size;
-	int		csorted;
-	int		i;
-	int		min;
-	int		size;
-
-	csorted = count_sorted(*lsta);
-	initial_size = ft_lstsize(*lsta);
-	while ((size = ft_lstsize(*lsta)) > 3 && initial_size != csorted)
-	{
-		i = index_min(*lsta, &min);
-		if (i <= size / 2)
-		{
-			while (*((int*)(*lsta)->content) != min)
-				print_do_action("ra", lsta, lstb, rotate);
-		}
-		else
-		{
-			while (*((int*)(*lsta)->content) != min)
-				print_do_action("rra", lsta, lstb, rotate);
-		}
-		print_do_action("pb", lsta, lstb, push);
-	}
-	sort_three(lsta, lstb);
-	while (*lstb)
-		print_do_action("pa", lsta, lstb, push);
-}*/
+sort_three(lsta, lstb);
+while (*lstb)
+	print_do_action("pa", lsta, lstb, push);
+	}*/
 
 /*static void	merge(t_list **lsta, t_list **lstb)
   {

@@ -6,14 +6,14 @@
 #    By: lode-spi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/19 10:33:54 by lode-spi          #+#    #+#              #
-#    Updated: 2018/10/01 15:24:43 by lode-spi         ###   ########.fr        #
+#    Updated: 2018/10/04 00:17:22 by lode-spi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
-INCLUDES = -Iincludes/
+INCLUDES = -Iincludes/ -Iminilibx_macos/
 LIB = -Llibft/
-CFLAGS = -Wall
+CFLAGS = -Wall #-fsanitize=address
 
 SRCPATH = src
 BINPATH = bin
@@ -24,7 +24,8 @@ CHECKER_SRC = ps_build_list.c \
 			  push.c \
 			  rotate.c \
 			  is_sorted.c \
-			  checker.c
+			  checker.c \
+			  visualizer.c
 CHECKER_OBJ = $(CHECKER_SRC:.c=.o)
 CHECKER_BIN = $(addprefix $(BINPATH)/, $(CHECKER_OBJ))
 
@@ -50,7 +51,7 @@ push_swap: $(PUSHSWAP_BIN)
 	@echo "▶ Building \033[34m$@\033[0m \033[32;1m✓\033[0m"
 
 checker: $(CHECKER_BIN)
-	@$(CC) -o checker $(CHECKER_BIN) $(LIB) -lft
+	@$(CC) -o checker $(CHECKER_BIN) $(LIB) -L minilibx_macos -lmlx -framework OpenGL -framework AppKit -lft
 	@echo "▶ Building \033[34m$@\033[0m \033[32;1m✓\033[0m"
 
 $(BINPATH)/%.o: $(SRCPATH)/%.c
