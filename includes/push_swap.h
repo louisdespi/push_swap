@@ -6,7 +6,7 @@
 /*   By: cvan-bee <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/20 14:59:31 by cvan-bee          #+#    #+#             */
-/*   Updated: 2018/10/04 01:31:15 by lode-spi         ###   ########.fr       */
+/*   Updated: 2018/10/06 02:51:22 by lode-spi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,18 @@
 
 # define PS_MODE NORMAL_MODE
 
-# define WIN_WIDTH 1000
-# define WIN_HEIGTH 1000 
+
+//MINILIBX
+# define WIN_WIDTH 1200
+# define WIN_HEIGTH 600
+
+# define REFRESH_TIME 10000
+# define INITIAL_REFRESH_COEF 1
+
+# define A_PCOLOR 0x0000FF
+# define A_NCOLOR 0x8080FF
+# define B_PCOLOR 0xFF0000
+# define B_NCOLOR 0xFF8080
 
 // PENSER A FREE LES LISTES DANS LES 2 MAINS
 // CHECKER LEAKS GET_NEXT_LINE !!!!!!
@@ -60,14 +70,19 @@ typedef struct	s_params
 	t_mlx	mlx;
 	t_list	*lsta;
 	t_list	*lstb;
-	int		heigth;
-	int		coef;
+	int		heigth_coef;
+	int		time_coef;
+	int		width_coef;
+	int		acc;
 }				t_params;
 
 void			ps_print_list(t_list *lst, int colorcode);
 
 int				ps_build_list(char **argv, t_list **lst);
-void			reader(t_list **lsta, t_list **lstb);
+
+void			read_once(t_list **lsta, t_list **lstb);
+int				read_all(t_list **lsta, t_list **lstb);
+
 int				swap(char *line, t_list **lsta, t_list **lstb);
 int				push(char *line, t_list **lsta, t_list **lstb);
 int				rotate(char *line, t_list **lsta, t_list **lstb);
@@ -95,11 +110,13 @@ void			print_table(int *t, size_t size); // TO DELETE
 int				build_table(t_list *lst, int **t);
 int				get_median(int *t, int first, int last);
 
-void			divide_screen(t_mlx mlx);
 void			draw_line(t_mlx mlx, int x, int y, int height, int width,
 		int colorcode);
-void			draw_pile(t_mlx mlx, t_list *lst, int x, int height, int coef,
-		int colorcode);
+void			draw_pileA(t_mlx mlx, t_list *lst, int height, int coef);
+void			draw_pileB(t_mlx mlx, t_list *lst, int height, int coef);
 int				print_frame(t_params *p);
+int				handle_key(int kc, t_params *p);
+
+void			launch_visualizer(t_list *lsta, t_list *lstb);
 
 #endif

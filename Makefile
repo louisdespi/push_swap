@@ -6,7 +6,7 @@
 #    By: lode-spi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/09/19 10:33:54 by lode-spi          #+#    #+#              #
-#    Updated: 2018/10/04 00:17:22 by lode-spi         ###   ########.fr        #
+#    Updated: 2018/10/05 01:03:45 by lode-spi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ CHECKER_SRC = ps_build_list.c \
 			  rotate.c \
 			  is_sorted.c \
 			  checker.c \
-			  visualizer.c
+			  visualizer.c \
+			  checker_visualizer.c
 CHECKER_OBJ = $(CHECKER_SRC:.c=.o)
 CHECKER_BIN = $(addprefix $(BINPATH)/, $(CHECKER_OBJ))
 
